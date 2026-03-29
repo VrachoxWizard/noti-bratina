@@ -193,8 +193,8 @@ body {
 /* HORIZONTAL SCROLL (WORK) */
 .work-section {
   height: 350vh;
-  background: var(--fg-color);
-  color: var(--bg-color);
+  background: var(--bg-color);
+  color: var(--fg-color);
 }
 .sticky-container {
   position: sticky;
@@ -221,16 +221,18 @@ body {
   font-size: clamp(3rem, 8vw, 8rem);
   line-height: 0.9;
   color: transparent;
-  -webkit-text-stroke: 2px var(--bg-color);
-}
-.outline-text.white-stroke {
   -webkit-text-stroke: 2px var(--fg-color);
+}
+.outline-text.dark-stroke {
+  -webkit-text-stroke: 2px var(--bg-color);
 }
 
 .work-card {
-  width: 350px;
-  height: 500px;
-  background: var(--bg-color);
+  width: max(300px, 25vw);
+  height: 60vh;
+  max-height: 600px;
+  background: #0a0a0a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--fg-color);
   padding: 2rem;
   flex-shrink: 0;
@@ -258,12 +260,12 @@ body {
 }
 .work-card.dark-card {
   background: var(--accent);
-  color: var(--fg-color);
+  color: var(--bg-color);
 }
 .work-card.outline-card {
   background: transparent;
-  border: 4px solid var(--bg-color);
-  color: var(--bg-color);
+  border: 2px solid var(--fg-color);
+  color: var(--fg-color);
 }
 
 /* ABOUT BRUTALIST GRID */
