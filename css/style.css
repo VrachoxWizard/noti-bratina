@@ -192,7 +192,7 @@ body {
 
 /* HORIZONTAL SCROLL (WORK) */
 .work-section {
-  height: 350vh;
+  height: 250vh;
   background: var(--bg-color);
   color: var(--fg-color);
 }
@@ -208,7 +208,7 @@ body {
   display: flex;
   gap: 2rem;
   padding-left: 4rem;
-  padding-right: 50vw;
+  padding-right: 4rem;
   will-change: transform;
 }
 .work-intro {
@@ -389,9 +389,6 @@ body {
   }
   .about-grid {
     grid-template-columns: 1fr;
-  }
-  .horizontal-scroll {
-    padding-right: 100vw;
   }
   .hero {
     padding: 2rem;
