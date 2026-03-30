@@ -106,7 +106,8 @@ body {
 .scroll-container {
   margin-left: 250px;
   width: calc(100% - 250px);
-  overflow: hidden;
+  /* Removed overflow: hidden because it destroys position: sticky! */
+  overflow-x: clip;
 }
 
 
