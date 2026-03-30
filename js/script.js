@@ -5,30 +5,61 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 1. HORIZONTAL SCROLL LOGIC FOR WORK SECTION
+    // 1. HORIZONTAL SCROLL LOGIC FOR WORK SECTION (CINEMATIC LERP PHYSICS)
     const workSection = document.querySelector('.work-section');
     const horizontalScroll = document.querySelector('.horizontal-scroll');
     
     if (workSection && horizontalScroll) {
-        window.addEventListener('scroll', () => {
+        let currentX = 0;
+        let targetX = 0;
+        let isAnimating = false;
+
+        const lerpAnimation = () => {
+            // Apply advanced Linear Interpolation for buttery smooth physics
+            currentX += (targetX - currentX) * 0.08;
+            
+            // Output to GPU via 3D transform
+            horizontalScroll.style.transform = `translate3d(-${currentX}px, 0, 0)`;
+            
+            // If we are close enough to target, stop the animation loop to save battery
+            if (Math.abs(targetX - currentX) > 0.5) {
+                requestAnimationFrame(lerpAnimation);
+            } else {
+                horizontalScroll.style.transform = `translate3d(-${targetX}px, 0, 0)`;
+                isAnimating = false;
+            }
+        };
+
+        const updateScroll = () => {
             const sectionTop = workSection.offsetTop;
             const sectionHeight = workSection.offsetHeight;
             const windowHeight = window.innerHeight;
             const scrollY = window.scrollY;
             
-            if (scrollY >= sectionTop && scrollY <= sectionTop + sectionHeight - windowHeight) {
-                const scrolled = scrollY - sectionTop;
-                const maxScroll = sectionHeight - windowHeight;
-                const scrollPercentage = scrolled / maxScroll;
-                
-                const scrollContainer = document.querySelector('.scroll-container');
-                const containerWidth = scrollContainer ? scrollContainer.offsetWidth : window.innerWidth;
-                const maxTranslate = horizontalScroll.scrollWidth - containerWidth;
-                const translateX = scrollPercentage * maxTranslate;
-                
-                horizontalScroll.style.transform = `translate3d(-${translateX}px, 0, 0)`;
+            const scrollContainer = document.querySelector('.scroll-container');
+            const containerWidth = scrollContainer ? scrollContainer.offsetWidth : window.innerWidth;
+            const maxTranslate = horizontalScroll.scrollWidth - containerWidth;
+            
+            // STRICT BOUNDARY CLAMPING: Re-syncing math even if scrolled quickly
+            if (scrollY < sectionTop) {
+                targetX = 0;
+            } else if (scrollY > sectionTop + sectionHeight - windowHeight) {
+                targetX = maxTranslate;
+            } else {
+                const scrollPercentage = (scrollY - sectionTop) / (sectionHeight - windowHeight);
+                targetX = scrollPercentage * maxTranslate;
             }
-        });
+
+            if (!isAnimating) {
+                isAnimating = true;
+                requestAnimationFrame(lerpAnimation);
+            }
+        };
+
+        // Passive listeners force the browser to prioritize smooth scrolling
+        window.addEventListener('scroll', updateScroll, { passive: true });
+        window.addEventListener('resize', updateScroll, { passive: true });
+        updateScroll(); // Initial execution
     }
 
     // 2. ACTIVE NAV LINKS UPDATE ON SCROLL & SMOOTH SCROLLING
